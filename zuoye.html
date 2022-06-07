@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>作业-排他思想-对象编程</title>
+    <script src="https://cdn.staticfile.org/vue/2.4.2/vue.min.js"></script>
+    <style>
+        .mycolor {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <ul>
+            <li @click = "isgetcolor(index)" :style="getcolor()" v-for = "(m,index) in movies">{{m}}</li>
+        </ul>
+    </div>
+    <script>
+        const app = new Vue({
+            el: '#app',
+            data: {
+                movies: ['亚洲','大洋洲','欧洲','非洲','南极洲'],
+            },
+            methods: {
+                isgetcolor (index) {
+                    console.log('点击选中事件触发')
+                    console.log(index)
+                },
+                getcolor () {
+                    console.log('选择颜色触发')
+                }
+            },
+        })
+    </script>
+</body>
+</html>

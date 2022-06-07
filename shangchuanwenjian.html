@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>利用Ajax上传文件</title>
+</head>
+
+<body>
+    <!-- 文本选择框 -->
+    <input type="file" id="file1">
+    <!-- 上传文件按钮 -->
+    <button id="btnUpload">上传文件</button>
+    <br>
+    <!-- 显示上传后的文件-图片 -->
+    <img src="" alt="图片" id="img">
+    <script>
+        // 获取元素
+        var btnUpload = document.querySelector('#btnUpload')
+        // 绑定事件
+        btnUpload.addEventListener('click', function () {
+            // 判断是否选择上传文件
+            var files = document.querySelector('#file1').files
+            if (files.length <= 0) {
+                return alert('请选择要上传的文件')
+            }
+            console.log('用户选择上传的文件')
+            console.log(files)
+            // 将表单中数据添加到表单对象中
+            var fd = new FormData()
+            fd.append('avatar', files[0])
+
+            // 利用Ajax发起POST请求,将文件发送到服务器
+            var xhm = new XMLHttpRequest()
+            // 监听文件上传的速度
+            xhm.upload.onprogress = function (e) {
+                if (e.lengthComputable) {
+                    // 计算上传的速度
+                    var pro = Math.ceil((e.loaded / e.total) * 100)
+                    console.log(pro)
+                }
+            }
+            xhm.open('POST', 'http://www.liulongbin.top:3006/api/upload/avatar')
+            xhm.send(fd)
+
+            xhm.onreadystatechange = function () {
+                if (xhm.readyState === 4 && xhm.status === 200) {
+                    var data = JSON.parse(xhm.responseText)
+                    console.log(data)
+                    if (data.status === 200) {
+                        document.querySelector('#img').src = 'http://www.liulongbin.top:3006' + data.url
+                    } else {
+                        console.log('上传失败')
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
